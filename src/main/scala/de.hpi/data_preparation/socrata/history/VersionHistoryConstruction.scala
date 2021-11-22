@@ -6,6 +6,7 @@ import de.hpi.data_preparation.socrata.io.Socrata_IOService
 import de.hpi.data_preparation.socrata.metadata.custom.joinability.`export`.SnapshotDiff
 
 import java.io.PrintWriter
+import java.time.LocalDate
 
 class VersionHistoryConstruction() extends StrictLogging{
 
@@ -32,8 +33,9 @@ class VersionHistoryConstruction() extends StrictLogging{
     pr.close()
   }
 
-  def constructVersionHistory() = {
+  def constructVersionHistory(maxDate:LocalDate) = {
     val versions = Socrata_IOService.getSortedDatalakeVersions()
+      .filter(!_.isAfter(maxDate))
     //initialize:
     val initialFiles = Socrata_IOService.extractDataToWorkingDir(versions(0))
     val idToVersions = scala.collection.mutable.HashMap[String,DatasetVersionHistory]()
