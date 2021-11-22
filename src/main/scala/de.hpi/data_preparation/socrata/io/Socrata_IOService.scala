@@ -397,6 +397,7 @@ object Socrata_IOService extends StrictLogging {
         ze = zis.getNextEntry
       }
       zis.close()
+      logger.warn(s"Finished extracting ${zipFile.getAbsolutePath} into ${subDirectory.getAbsolutePath}")
       extractedFiles.toSet
     }
   }

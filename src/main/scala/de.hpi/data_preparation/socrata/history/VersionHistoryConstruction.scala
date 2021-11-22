@@ -47,7 +47,7 @@ class VersionHistoryConstruction() extends StrictLogging{
     for(i <- 1 until versions.size){
       val curVersion = versions(i)
       if(!Socrata_IOService.compressedDiffExists(curVersion) && !Socrata_IOService.uncompressedDiffExists(curVersion)){
-        logger.trace(s"Creating Diff for $curVersion")
+        logger.debug(s"Creating Diff for $curVersion")
         diffManager.calculateDiff(curVersion,restorePreviousSnapshotIfNecessary = true)
       }
       Socrata_IOService.extractDiffToWorkingDir(curVersion)
@@ -61,6 +61,7 @@ class VersionHistoryConstruction() extends StrictLogging{
         history.deletions += curVersion
       })
       Socrata_IOService.clearUncompressedDiff(curVersion)
+      logger.debug(s"Done with Diff for $curVersion")
     }
     val versionHistoryFile = Socrata_IOService.getVersionHistoryFile()
     val pr = new PrintWriter(versionHistoryFile)
