@@ -32,7 +32,6 @@ class DatasetVersionHistory(val id:String,
       deletions = deletions.dropWhile(d => d.toEpochDay<versionsWithChanges.head.toEpochDay)
   }
 
-
   def removeIgnoredVersions(toIgnore: Iterable[DatasetInstance]) = {
     toIgnore.foreach{case DatasetInstance(_,versionToIgnore) => {
       val index = versionsWithChanges.indexOf(versionToIgnore)

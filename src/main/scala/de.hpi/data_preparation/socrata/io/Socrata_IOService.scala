@@ -221,6 +221,7 @@ object Socrata_IOService extends StrictLogging {
     logger.debug(s"extracted (uncompressed) snapshots available for {}", getSortedUncompressedSnapshots)
     logger.debug(s"Compressed Diffs available for: {}", getSortedZippedDiffs)
     logger.debug(s"extracted (uncompressed) diffs available for {}", getSortedUncompressedDiffs)
+    logger.debug(s"Sorted Datalake versions: {}",getSortedDatalakeVersions)
   }
 
   def compressedSnapshotExists(date: LocalDate) = getCompressedDataFile(date).exists()
