@@ -45,6 +45,7 @@ class Transformer() extends StrictLogging{
   }
 
   def transformAllForID(id: String,timeRange:Option[(LocalDate,LocalDate)]=None) = {
+    logger.debug(s"Proccessing $id")
     val versions = Socrata_IOService.getSortedMinimalUmcompressedVersions
       .filter(d => {
         val fileExsists = Socrata_IOService.getMinimalUncompressedVersionDir(d).listFiles().exists(f => {
