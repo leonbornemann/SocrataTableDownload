@@ -17,7 +17,8 @@ class ColumnHistoryExporter(id: String, versions: IndexedSeq[LocalDate],resultDi
 
   def exportAll() = {
     versions.sorted.foreach(v => {
-      val ds = RelationalDataset.load(id,v)
+      val dsOption = RelationalDataset.tryLoad(id,v)
+      val ds = if(dsOption.isDefined) dsOption.get else RelationalDataset.createEmpty(id,v)
       val dateAsInstant = v.atStartOfDay().toInstant(ZoneOffset.UTC)
       if(ds.isEmpty){
         columns.keySet.foreach(colID => addDeleteIfNonEmpty(colID,dateAsInstant))
