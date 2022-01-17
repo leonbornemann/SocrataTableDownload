@@ -15,6 +15,24 @@ case class RelationalDataset(id:String,
                              var rows:mutable.ArrayBuffer[RelationalDatasetRow]) extends JsonWritable[RelationalDataset] {
   def isEmpty: Boolean = rows.isEmpty
 
+  def nullsafeToString(value: Any) = if(value==null) "null" else value.toString
+
+  def getColValues(colIndex:Int) = {
+    (0 until rows.size)
+      .map(i => {
+        nullsafeToString(rows(i).fields(colIndex))
+      })
+      .toSet
+  }
+
+  def getColValuesForColID(id:Int) = {
+    val index = getColIDs.indexOf(id)
+    getColValues(index)
+  }
+
+  def getColIDs = attributes.map(_.id)
+
+  def ncols = if(isEmpty) 0 else rows(0).fields.size
 
   def sortColumnsByAttributePosition() = {
     assert(attributes.map(_.position.get).sorted.toIndexedSeq == (0 until attributes.size))
